@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
@@ -9,6 +9,9 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function RegisterScreen() {
   const navigation = useNavigation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
   // 🔹 Validasi form pakai Yup
   const schema = Yup.object().shape({
@@ -85,10 +88,16 @@ export default function RegisterScreen() {
             value={value}
             onChangeText={onChange}
             mode="outlined"
-            secureTextEntry
+            secureTextEntry={!showPassword}
             style={styles.input}
             error={errors.password}
-          />
+            right={
+                <TextInput.Icon
+                icon={showPassword ? 'eye-off' : 'eye'}
+                onPress={() => setShowPassword(!showPassword)}
+                />
+            }
+            />
         )}
       />
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
@@ -103,10 +112,16 @@ export default function RegisterScreen() {
             value={value}
             onChangeText={onChange}
             mode="outlined"
-            secureTextEntry
+            secureTextEntry={!showConfirmPassword}
             style={styles.input}
             error={errors.password_confirmation}
-          />
+            right={
+                <TextInput.Icon
+                icon={showConfirmPassword ? 'eye-off' : 'eye'}
+                onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                />
+            }
+            />
         )}
       />
       {errors.password_confirmation && <Text style={styles.error}>{errors.password_confirmation.message}</Text>}
